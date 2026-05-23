@@ -1,6 +1,6 @@
-import sqlite3
+from database import conectar
 
-conexion = sqlite3.connect("cafeteria.db")
+conexion = conectar()
 
 conexion.execute("""
 CREATE TABLE IF NOT EXISTS productos (
