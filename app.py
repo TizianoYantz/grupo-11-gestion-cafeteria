@@ -1,43 +1,68 @@
 from flask import Flask, render_template, request, redirect
-import sqlite3
+from database import conectar
 
 app = Flask(__name__)
 
-class producto:
-    def __init__(self,id,nombre,categoria,precio,stock,disponible=True):
-        self.id = id
-        self.nombre = nombre
-        self.categoria = categoria
-        self.precio = precio
-        self.stock = stock
-        self.estado = disponible
-
-    def vender(self, cantidad):
-        if cantidad <= self.stock:
-            self.stock -= cantidad
-            return True
-        return False
-    
-    def reponer_stock(self, cantidad):
-        self.stock += cantidad
 
 @app.route("/")
 def index():
 
-    conexion = sqlite3.connect("cafeteria.db")
+    conexion = conectar()
     cursor = conexion.cursor()
 
     cursor.execute("SELECT * FROM productos")
+
     productos = cursor.fetchall()
 
     conexion.close()
 
-    return render_template("index.html", productos=productos)
+    return render_template(
+        "index.html",
+        productos=productos
+    )
+
+@app.route("/crear", methods=["GET", "POST"])
+def crear_producto():
+
+    if request.method == "POST":
+
+        nombre = request.form["nombre"]
+        categoria = request.form["categoria"]
+        precio = request.form["precio"]
+        stock = request.form["stock"]
+
+        conexion = conectar()
+        cursor = conexion.cursor()
+
+        sql = """
+        INSERT INTO productos
+        (nombre, categoria, precio, stock, disponible)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+
+        valores = (
+            nombre,
+            categoria,
+            precio,
+            stock,
+            True
+        )
+
+        cursor.execute(sql, valores)
+
+        conexion.commit()
+        conexion.close()
+
+        return redirect("/")
+
+    return render_template("crear_producto.html")
+
+
 
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar_producto(id):
 
-    conexion = sqlite3.connect("cafeteria.db")
+    conexion = conectar()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -47,33 +72,90 @@ def editar_producto(id):
         precio = request.form["precio"]
         stock = request.form["stock"]
 
-        cursor.execute("""
+        sql = """
         UPDATE productos
-        SET nombre = ?, categoria = ?, precio = ?, stock = ?
-        WHERE id = ?
-        """, (nombre, categoria, precio, stock, id))
+        SET nombre = %s,
+            categoria = %s,
+            precio = %s,
+            stock = %s
+        WHERE id = %s
+        """
+
+        valores = (
+            nombre,
+            categoria,
+            precio,
+            stock,
+            id
+        )
+
+        cursor.execute(sql, valores)
 
         conexion.commit()
         conexion.close()
 
         return redirect("/")
 
-    cursor.execute("SELECT * FROM productos WHERE id = ?", (id,))
+    cursor.execute(
+        "SELECT * FROM productos WHERE id = %s",
+        (id,)
+    )
+
     producto = cursor.fetchone()
 
     conexion.close()
 
-    return render_template("editar_producto.html", producto=producto)
+    return render_template(
+        "editar_producto.html",
+        producto=producto
+    )
 
 @app.route("/eliminar/<int:id>", methods=["POST"])
 def eliminar_producto(id):
 
-    conexion = sqlite3.connect("cafeteria.db")
+    conexion = conectar()
     cursor = conexion.cursor()
 
-    cursor.execute("DELETE FROM productos WHERE id = ?", (id,))
+    cursor.execute(
+        "DELETE FROM productos WHERE id = %s",
+        (id,)
+    )
 
     conexion.commit()
+    conexion.close()
+
+    return redirect("/")
+
+@app.route("/vender/<int:id>", methods=["POST"])
+def vender_producto(id):
+
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT stock FROM productos WHERE id = %s",
+        (id,)
+    )
+
+    producto = cursor.fetchone()
+
+    stock_actual = producto[0]
+
+    if stock_actual > 0:
+
+        nuevo_stock = stock_actual - 1
+
+        cursor.execute(
+            """
+            UPDATE productos
+            SET stock = %s
+            WHERE id = %s
+            """,
+            (nuevo_stock, id)
+        )
+
+        conexion.commit()
+
     conexion.close()
 
     return redirect("/")
