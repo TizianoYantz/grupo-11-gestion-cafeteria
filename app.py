@@ -4,6 +4,7 @@ from modelos.producto import Producto
 from modelos.venta import Venta
 from modelos.inventario import Inventario
 
+
 app = Flask(__name__)
 
 @app.route("/")
