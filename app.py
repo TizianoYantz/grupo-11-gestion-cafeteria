@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect
 from database import conectar
+from modelos.producto import Producto
+from modelos.inventario import Inventario
+from modelos.venta import Venta
+
 
 app = Flask(__name__)
 
