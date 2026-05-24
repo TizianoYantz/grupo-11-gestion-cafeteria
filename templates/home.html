@@ -1,23 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestión de Cafetería</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Cafetería UNAB 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('{{ url_for('static', filename='Fondo_Home.jpg') }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Roboto', sans-serif;
+      color: white;
+    }
+    .navbar {
+      background-color: rgba(75, 46, 46, 0.9);
+      justify-content: center;
+    }
+    .navbar-brand {
+      margin: 0 auto;
+      font-size: 1.8rem;
+    }
+    .menu-container {
+      background-color: rgba(75, 46, 46, 0.95);
+      padding: 30px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .btn-custom {
+  background-color: #A67B5B;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;   /* tamaño del texto */
+  display: flex;
+  flex-direction: column; /* texto debajo del icono */
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  min-height: 150px; /* asegura que todos los botones tengan la misma altura */
+    }
+    .btn-custom:hover {
+      background-color: #8B5E3C;
+    }
+    .welcome-text {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+    .icon {
+      width: 6.2em;   /* tamaño relativo al texto */
+      height: 6.2em;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 768px) {
+      .icon {
+        width: 1em;
+        height: 1em;
+      }
+    }
+  </style>
 </head>
-<body style="background-image: url('{{ url_for('static', filename='Fondo_Home.jpg') }}');
-             background-size: cover;
-             background-position: center;
-             background-repeat: no-repeat;">
-    <div class="container text-center mt-5 text-white">
-        <h1 class="mb-4">☕ Cafetería UNAB 2026</h1>
-        <div class="d-grid gap-3 col-6 mx-auto">
-            <a href="/inventario" class="btn btn-primary btn-lg">Inventario</a>
-            <a href="/ventas" class="btn btn-success btn-lg">Realizar Venta</a>
-            <a href="/reportes" class="btn btn-info btn-lg">Generar Reporte</a>
+<body>
+  <nav class="navbar navbar-dark">
+    <span class="navbar-brand mb-0 h1">Cafetería UNAB 2026</span>
+  </nav>
+
+  <div class="container text-center mt-5">
+    <p class="welcome-text">Bienvenida al sistema de gestión de la cafetería. Elegí una opción para comenzar:</p>
+    <div class="menu-container mx-auto">
+      <div class="row g-3">
+        <div class="col-md-4 col-12">
+          <a href="/inventario" class="btn btn-custom btn-lg w-100">
+            <img src="{{ url_for('static', filename='icon_inventario.png') }}" class="icon" alt="Inventario">
+            Inventario
+          </a>
         </div>
+        <div class="col-md-4 col-12">
+          <a href="/ventas" class="btn btn-custom btn-lg w-100">
+            <img src="{{ url_for('static', filename='icon_ventas.png') }}" class="icon" alt="Ventas">
+            Realizar Venta
+          </a>
+        </div>
+        <div class="col-md-4 col-12">
+          <a href="/reportes" class="btn btn-custom btn-lg w-100">
+            <img src="{{ url_for('static', filename='icon_reportes.png') }}" class="icon" alt="Reportes">
+            Generar Reporte
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
-
 </html>
-
