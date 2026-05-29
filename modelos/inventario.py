@@ -1,3 +1,5 @@
+from database import conectar
+
 class Inventario:
 
     def __init__(self):
@@ -22,10 +24,19 @@ class Inventario:
 
         return None
 
-    def listar_productos(self):
+    @staticmethod
+    def listar_productos():
 
-        for producto in self.productos:
-            print(producto)
+        conexion = conectar()
+        cursor = conexion.cursor()
+
+        cursor.execute("SELECT * FROM productos")
+
+        productos = cursor.fetchall()
+
+        conexion.close()
+
+        return productos
 
     def filtrar_categoria(self, categoria):
 

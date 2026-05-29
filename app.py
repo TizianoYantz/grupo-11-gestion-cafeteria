@@ -64,5 +64,34 @@ def eliminar_producto(id):
     Producto.eliminar_producto(id)
     return redirect("/inventario")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route("/venta", methods=["GET", "POST"])
+def venta():
+
+    if request.method == "POST":
+
+        producto_id = int(request.form["producto_id"])
+        cantidad = int(request.form["cantidad"])
+
+        producto = Producto.obtener_producto(producto_id)
+
+        if producto.stock < cantidad:
+            return "Stock insuficiente"
+
+        venta = Venta()
+
+        venta.agregar_producto(producto, cantidad)
+
+        producto.stock -= cantidad
+
+        producto.editar_producto(producto_id)
+
+        return redirect("/inventario")
+
+    productos = Inventario.listar_productos()
+
+    return render_template(
+        "venta.html",
+        productos=productos
+    )
+
+app.run(debug=True)

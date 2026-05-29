@@ -48,12 +48,37 @@ class Producto:
     # OBTENER PRODUCTO
     @staticmethod
     def obtener_producto(id):
+
         conexion = conectar()
-        cursor = conexion.cursor()
-        cursor.execute("SELECT * FROM productos WHERE id = %s", (id,))
-        producto = cursor.fetchone()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute(
+            "SELECT * FROM productos WHERE id = %s",
+            (id,)
+        )
+
+        fila = cursor.fetchone()
+
         conexion.close()
-        return producto
+
+        if fila:
+
+            producto = Producto(
+                fila["nombre"],
+                fila["categoria"],
+                fila["precio"],
+                fila["stock"]
+            )
+
+            producto.id = fila["id"]
+
+            return producto
+
+        return None
+
+        
+
+        return None
 
     # EDITAR PRODUCTO
     def editar_producto(self, id):

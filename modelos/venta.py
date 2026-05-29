@@ -1,3 +1,5 @@
+from database import conectar
+
 class Venta:
 
     def __init__(self):
@@ -21,4 +23,6 @@ class Venta:
             print(f"{producto.nombre} x{cantidad}")
 
         print(f"TOTAL: ${self.calcular_total()}")
-        
+
+    def guardar_venta(self):
+        pass

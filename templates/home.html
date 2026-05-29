@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Cafetería UNAB 2026</title>
@@ -7,6 +8,7 @@
   <!-- Archivo CSS externo -->
   <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
+
 <body>
   <nav class="navbar navbar-dark">
     <span class="navbar-brand mb-0 h1">Cafetería UNAB 2026</span>
@@ -23,7 +25,7 @@
           </a>
         </div>
         <div class="col-md-4 col-12">
-          <a href="/ventas" class="btn btn-custom btn-lg w-100">
+          <a href="/venta" class="btn btn-custom btn-lg w-100">
             <img src="{{ url_for('static', filename='icon_ventas.png') }}" class="icon" alt="Ventas">
             Realizar Venta
           </a>
@@ -38,4 +40,5 @@
     </div>
   </div>
 </body>
+
 </html>
