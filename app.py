@@ -35,7 +35,7 @@ def crear_producto():
 @app.route("/inventario")
 def inventario():
     productos = Producto.listar_productos()
-    return render_template("index.html", productos=productos)
+    return render_template("Inventario.html", productos=productos)
 
 # EDITAR PRODUCTO
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
