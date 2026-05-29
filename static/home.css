@@ -1,0 +1,61 @@
+body {
+  background-image: url('/static/Fondo_Home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+.navbar {
+  background-color: rgba(75, 46, 46, 0.9);
+  justify-content: center;
+}
+
+.navbar-brand {
+  margin: 0 auto;
+  font-size: 1.8rem;
+}
+
+.menu-container {
+  background-color: rgba(75, 46, 46, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.btn-custom {
+  background-color: #A67B5B;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;   /* tamaño del texto */
+  display: flex;
+  flex-direction: column; /* texto debajo del icono */
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  min-height: 150px; /* asegura que todos los botones tengan la misma altura */
+}
+
+.btn-custom:hover {
+  background-color: #8B5E3C;
+}
+
+.welcome-text {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+}
+
+.icon {
+  width: 6.2em;   /* tamaño relativo al texto */
+  height: 6.2em;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 768px) {
+  .icon {
+    width: 1em;
+    height: 1em;
+  }
+}
