@@ -10,12 +10,15 @@ app = Flask(__name__)
 def home():
     return render_template("Home.html")
 
+
 # ---------------- INVENTARIO ----------------
+
 @app.route("/crear", methods=["GET", "POST"])
 def crear_producto():
     if request.method == "POST":
-        nombre = request.form["nombre"]
-        categoria = request.form["categoria"]
+
+        nombre = request.form["nombre"].strip()
+        categoria = request.form["categoria"].strip().title()
         precio = float(request.form["precio"])
         stock = int(request.form["stock"])
 
@@ -25,16 +28,56 @@ def crear_producto():
             precio=precio,
             stock=stock
         )
+
         nuevo_producto.crear_producto()
-        return render_template("Inventario.html", productos=Producto.listar_productos())
+
+        return redirect("/inventario")
 
     return render_template("crear_producto.html")
 
 @app.route("/inventario")
 def inventario():
-    productos = Producto.listar_productos()
-    return render_template("Inventario.html", productos=productos)
 
+    productos = Producto.listar_productos()
+    categorias = Producto.obtener_categorias()
+
+    buscar = request.args.get("buscar", "")
+    categoria = request.args.get("categoria", "")
+    orden = request.args.get("orden", "")
+
+    # Buscar por nombre
+    if buscar:
+        productos = [
+            p for p in productos
+            if buscar.lower() in p[1].lower()
+        ]
+
+    # Filtrar categoría
+    if categoria:
+        productos = [
+            p for p in productos
+            if p[2].strip().lower() == categoria.strip().lower()
+        ]
+
+    # Ordenar
+    if orden == "nombre":
+        productos.sort(key=lambda p: p[1].lower())
+
+    elif orden == "precio_asc":
+        productos.sort(key=lambda p: float(p[3]))
+
+    elif orden == "precio_desc":
+        productos.sort(
+            key=lambda p: float(p[3]),
+            reverse=True
+        )
+
+    return render_template(
+        "Inventario.html",
+        productos=productos,
+        categorias=categorias
+    )
+    
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar_producto(id):
 
@@ -42,8 +85,8 @@ def editar_producto(id):
 
         print("ENTRO AL POST")
 
-        nombre = request.form["nombre"]
-        categoria = request.form["categoria"]
+        nombre = request.form["nombre"].strip()
+        categoria = request.form["categoria"].strip().title()
         precio = float(request.form["precio"])
         stock = int(request.form["stock"])
 
@@ -64,7 +107,10 @@ def editar_producto(id):
 
     producto = Producto.obtener_producto(id)
 
-    return render_template("editar_producto.html", producto=producto)
+    return render_template(
+        "editar_producto.html",
+        producto=producto
+    )
 
 @app.route("/eliminar/<int:id>", methods=["POST"])
 def eliminar_producto(id):

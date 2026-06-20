@@ -39,6 +39,72 @@
                 </div>
             </div>
 
+            <!-- Buscador y filtros -->
+            <form method="GET" action="/inventario">
+
+                <div class="input-group mb-3">
+                    <input type="text"
+                           class="form-control"
+                           name="buscar"
+                           placeholder="Buscar producto por nombre..."
+                           value="{{ request.args.get('buscar', '') }}">
+
+                    <button class="btn btn-primary" type="submit">
+                        Buscar
+                    </button>
+
+                    <a href="/inventario" class="btn btn-secondary">
+                        Limpiar
+                    </a>
+                </div>
+
+                <h5 class="text-start mb-2">Filtrar productos</h5>
+
+                <div class="row mb-4">
+
+                    <div class="col-md-5">
+                        <select class="form-select filtro-select" name="categoria">
+                            <option value="">Todas las categorías</option>
+
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria }}"
+                                {% if request.args.get('categoria') == categoria %}selected{% endif %}>
+                                {{ categoria }}
+                            </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <select class="form-select filtro-select" name="orden">
+                            <option value="">Sin ordenar</option>
+                            <option value="nombre"
+                                {% if request.args.get('orden') == 'nombre' %}selected{% endif %}>
+                                Nombre A-Z
+                            </option>
+                            <option value="precio_asc"
+                                {% if request.args.get('orden') == 'precio_asc' %}selected{% endif %}>
+                                Precio menor a mayor
+                            </option>
+                            <option value="precio_desc"
+                                {% if request.args.get('orden') == 'precio_desc' %}selected{% endif %}>
+                                Precio mayor a menor
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" type="submit">
+                            Aplicar
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <!-- Tabla -->
             <table class="table table-bordered table-hover bg-white">
                 <thead class="table-dark">
                     <tr>
@@ -93,6 +159,7 @@
                 </tbody>
 
             </table>
+
         </div>
     </div>
 </body>

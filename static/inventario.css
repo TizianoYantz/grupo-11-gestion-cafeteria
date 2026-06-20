@@ -95,3 +95,16 @@ body {
   border-radius: 6px;
   margin: 2px;
 }
+
+.filtro-select {
+    background-color: #d2b48c; /* marrón clarito */
+    border: 1px solid #b38b5d;
+    color: #3e2723;
+    font-weight: 500;
+}
+
+.filtro-select:focus {
+    background-color: #d2b48c;
+    border-color: #8b5e3c;
+    box-shadow: 0 0 5px rgba(139, 94, 60, 0.4);
+}

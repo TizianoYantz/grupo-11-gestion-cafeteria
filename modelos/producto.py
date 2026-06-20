@@ -115,3 +115,20 @@ class Producto:
 
         conexion.commit()
         conexion.close()
+    
+    @staticmethod
+    def obtener_categorias():
+        conexion = conectar()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            SELECT DISTINCT categoria
+            FROM productos
+            ORDER BY categoria
+        """)
+
+        categorias = [fila[0] for fila in cursor.fetchall()]
+
+        conexion.close()
+
+        return categorias    
